@@ -4,5 +4,13 @@
     <file url="file://$PROJECT_DIR$/.idea/queries/Query.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/.idea/queries/Query_1.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/.idea/queries/Query_2.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/database/01_schema.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/database/02_seed_data.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/database/03_views.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/database/04_functions.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/database/05_procedures.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/database/06_triggers.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/database/07_users.sql" dialect="MySQL" />
+    <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>
