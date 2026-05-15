@@ -28,7 +28,7 @@ public class MainFrame extends JFrame {
         JButton loginButton = new JButton("Employee / Admin Login");
 
         equipmentButton.addActionListener(e ->
-                new StavVybaveniFrame().setVisible(true)
+                new DostupneVybaveniFrame().setVisible(true)
         );
 
         reservationButton.addActionListener(e ->
