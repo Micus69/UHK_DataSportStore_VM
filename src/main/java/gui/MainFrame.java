@@ -28,7 +28,7 @@ public class MainFrame extends JFrame {
         JButton loginButton = new JButton("Employee / Admin Login");
 
         equipmentButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "Equipment overview will be implemented.")
+                new StavVybaveniFrame().setVisible(true)
         );
 
         reservationButton.addActionListener(e ->
