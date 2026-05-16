@@ -1,71 +1,7 @@
-/*
-===========================================================
-FILE: 05_procedures.sql
-===========================================================
+DROP PROCEDURE IF EXISTS VytvorVypujckuZRezervace;
+DROP PROCEDURE IF EXISTS VratVypujcku;
 
-Description:
-This file contains stored procedures used for managing
-rentals and reservation processing within the sports
-equipment rental system.
-
-Purpose:
-The procedures encapsulate business logic directly
-inside the database layer and ensure transactional
-consistency during critical operations.
-
-Main functionality:
-- Converts reservations into active rentals
-- Automatically creates rental items from reservation items
-- Calculates total rental prices
-- Updates reservation states
-- Handles equipment return operations
-- Ensures transactional safety using COMMIT operations
-
-Procedures overview:
-1. VytvorVypujckuZRezervace
-   - Converts an existing reservation into a rental
-   - Creates rental records and rental items
-   - Calculates total rental cost
-   - Updates reservation status
-   - Uses database transactions for consistency
-
-2. VratVypujcku
-   - Marks rental as returned
-   - Updates return date
-   - Updates rental status
-
-Technical details:
-- Uses START TRANSACTION and COMMIT
-- Prevents inconsistent data during rental creation
-- Reuses database functions for pricing calculations
-- Uses SELECT INTO for internal variable handling
-- Uses LAST_INSERT_ID for newly created rental records
-
-Advantages:
-- Centralized business logic
-- Reduced application-side complexity
-- Improved database consistency
-- Better transactional safety
-- Reusable database operations
-
-Used tables:
-- Rezervace
-- RezervacePolozka
-- Vypujcka
-- VypujckaPolozka
-- Vybaveni
-- TypVybaveni
-
-Used functions:
-- PocetDniVypujcky
-- VypocetCenyPolozky
-
-Designed for:
-- MySQL database engine
-- Spring Boot integration
-- Transaction-safe rental processing
-===========================================================
-*/
+DROP TRIGGER IF EXISTS TRG_VypujckaPolozka_AfterInsert;
 
 DELIMITER $$
 
@@ -131,6 +67,19 @@ BEGIN
              JOIN Vybaveni vyb ON rp.VybaveniID = vyb.VybaveniID
              JOIN TypVybaveni tv ON vyb.TypVybaveniID = tv.TypVybaveniID
     WHERE rp.RezervaceID = p_RezervaceID;
+
+    UPDATE Vybaveni
+    SET StavVybaveniID = (
+        SELECT StavVybaveniID
+        FROM StavVybaveni
+        WHERE NazevStavu = 'Zapujcene'
+        LIMIT 1
+    )
+    WHERE VybaveniID IN (
+        SELECT VybaveniID
+        FROM RezervacePolozka
+        WHERE RezervaceID = p_RezervaceID
+    );
 
     SELECT SUM(CenaPolozky)
     INTO v_CenaCelkem

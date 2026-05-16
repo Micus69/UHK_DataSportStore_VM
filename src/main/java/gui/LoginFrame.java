@@ -1,14 +1,21 @@
 package gui;
 
-import org.springframework.stereotype.Component;
+import model.Zamestnanec;
+import repository.AuthRepository;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Component
 public class LoginFrame extends JFrame {
 
+    private final AuthRepository authRepository;
+
+    private JTextField loginField;
+    private JPasswordField passwordField;
+
     public LoginFrame() {
+        this.authRepository = new AuthRepository();
+
         setTitle("Employee / Admin Login");
         setSize(400, 250);
         setLocationRelativeTo(null);
@@ -21,37 +28,11 @@ public class LoginFrame extends JFrame {
         JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
-        JTextField loginField = new JTextField();
-        JPasswordField passwordField = new JPasswordField();
+        loginField = new JTextField();
+        passwordField = new JPasswordField();
 
         JButton loginButton = new JButton("Login");
-
-        loginButton.addActionListener(e -> {
-            String login = loginField.getText();
-            String password = new String(passwordField.getPassword());
-
-            /*
-             * This is a temporary login check.
-             * Later this logic should be moved into AuthService
-             * and verified against the Zamestnanec database table.
-             */
-            if (login.equals("admin") && password.equals("admin123")) {
-                JOptionPane.showMessageDialog(this, "Logged in as ADMIN");
-                new AdminFrame().setVisible(true);
-                dispose();
-            } else if (login.equals("employee") && password.equals("employee123")) {
-                JOptionPane.showMessageDialog(this, "Logged in as EMPLOYEE");
-                new ZamestnanecFrame().setVisible(true);
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Invalid login or password.",
-                        "Login failed",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
-        });
+        loginButton.addActionListener(e -> login());
 
         panel.add(new JLabel("Login:"));
         panel.add(loginField);
@@ -63,5 +44,33 @@ public class LoginFrame extends JFrame {
         panel.add(loginButton);
 
         add(panel);
+    }
+
+    private void login() {
+        String login = loginField.getText();
+        String password = new String(passwordField.getPassword());
+
+        Zamestnanec zamestnanec = authRepository.login(login, password);
+
+        if (zamestnanec == null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Invalid login or password.",
+                    "Login failed",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        if ("ADMIN".equalsIgnoreCase(zamestnanec.getRole())) {
+            new AdminFrame().setVisible(true);
+        } else if ("EMPLOYEE".equalsIgnoreCase(zamestnanec.getRole())) {
+            new ZamestnanecFrame(zamestnanec).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Unknown user role.");
+            return;
+        }
+
+        dispose();
     }
 }

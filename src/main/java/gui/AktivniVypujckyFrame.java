@@ -6,20 +6,17 @@ import repository.AktivniVypujckaRepository;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.time.LocalDate;
 import java.util.List;
 
-public class VraceniFrame extends JFrame {
+public class AktivniVypujckyFrame extends JFrame {
 
     private final AktivniVypujckaRepository repository;
-
-    private JTable table;
     private DefaultTableModel tableModel;
 
-    public VraceniFrame() {
+    public AktivniVypujckyFrame() {
         this.repository = new AktivniVypujckaRepository();
 
-        setTitle("Return Equipment");
+        setTitle("Active Rentals");
         setSize(1150, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -32,7 +29,7 @@ public class VraceniFrame extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JLabel titleLabel = new JLabel("Return Equipment", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Active Rentals Overview", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
         tableModel = new DefaultTableModel(
@@ -58,13 +55,10 @@ public class VraceniFrame extends JFrame {
             }
         };
 
-        table = new JTable(tableModel);
+        JTable table = new JTable(tableModel);
         table.setRowHeight(24);
 
         JScrollPane scrollPane = new JScrollPane(table);
-
-        JButton returnButton = new JButton("Return Selected Rental");
-        returnButton.addActionListener(e -> returnSelectedRental());
 
         JButton refreshButton = new JButton("Refresh");
         refreshButton.addActionListener(e -> loadActiveRentals());
@@ -73,7 +67,6 @@ public class VraceniFrame extends JFrame {
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.add(returnButton);
         buttonPanel.add(refreshButton);
         buttonPanel.add(closeButton);
 
@@ -105,35 +98,5 @@ public class VraceniFrame extends JFrame {
                     rental.getStavVypujcky()
             });
         }
-    }
-
-    private void returnSelectedRental() {
-        int selectedRow = table.getSelectedRow();
-
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select rental first.");
-            return;
-        }
-
-        int vypujckaID = Integer.parseInt(
-                tableModel.getValueAt(selectedRow, 0).toString()
-        );
-
-        int result = JOptionPane.showConfirmDialog(
-                this,
-                "Do you really want to return rental ID " + vypujckaID + "?",
-                "Confirm return",
-                JOptionPane.YES_NO_OPTION
-        );
-
-        if (result != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        repository.returnRental(vypujckaID, LocalDate.now());
-
-        JOptionPane.showMessageDialog(this, "Rental was successfully returned.");
-
-        loadActiveRentals();
     }
 }
