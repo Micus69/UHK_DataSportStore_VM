@@ -25,19 +25,19 @@ public class AdminFrame extends JFrame {
         JButton closeButton = new JButton("Close");
 
         manageEquipmentButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "Equipment management will be implemented.")
+                new VybaveniManagementFrame().setVisible(true)
         );
 
         manageEmployeesButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "Employee management will be implemented.")
+                new ZamestnanecManagementFrame().setVisible(true)
         );
 
         manageCodeListsButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "Code list management will be implemented.")
+                new StavVybaveniFrame().setVisible(true)
         );
 
         statisticsButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "Statistics dashboard will be implemented.")
+                new StatistikaFrame().setVisible(true)
         );
 
         closeButton.addActionListener(e -> dispose());
