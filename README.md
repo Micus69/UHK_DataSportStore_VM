@@ -1,5 +1,3 @@
----
-
 # Project Description
 
 This project represents a complete sports equipment rental management system developed as a university database application project.
@@ -20,8 +18,6 @@ The project demonstrates:
 - Java GUI development
 - repository pattern architecture
 - Docker containerization
-
----
 
 # Main Features
 
@@ -46,8 +42,6 @@ The project demonstrates:
 - Manage equipment states
 - View system statistics
 - Manage business data
-
----
 
 # Database Features
 
@@ -85,8 +79,6 @@ Implemented database views:
 - `Pohled_DostupneVybaveni`
 - `Pohled_AktivniRezervace`
 
----
-
 # Authentication and Roles
 
 The system supports role-based authentication.
@@ -111,8 +103,6 @@ Employee can:
 - manage active reservations
 - view active rentals
 
----
-
 # Default Test Accounts
 
 ## Administrator
@@ -129,8 +119,6 @@ Login: employee
 Password: employee123
 ```
 
----
-
 # Database Startup
 
 After Docker is running, start the MySQL container:
@@ -145,8 +133,6 @@ Verify running containers:
 docker ps
 ```
 
----
-
 # Running the Application
 
 Run the Java application from IntelliJ IDEA:
@@ -160,9 +146,6 @@ or run using Maven:
 ```powershell
 mvn spring-boot:run
 ```
-
----
-
 # Database Backup
 
 Database backup can be created using:
@@ -170,8 +153,6 @@ Database backup can be created using:
 ```powershell
 docker exec pujcovna-mysql mysqldump -u root -p pujcovna > backup.sql
 ```
-
----
 
 # System Architecture
 
@@ -186,8 +167,6 @@ MySQL Database Layer
 ↓
 Triggers / Procedures / Functions
 ```
-
----
 
 # GUI Localization
 
