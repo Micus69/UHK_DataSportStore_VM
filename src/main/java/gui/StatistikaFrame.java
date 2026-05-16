@@ -19,7 +19,7 @@ public class StatistikaFrame extends JFrame {
     public StatistikaFrame() {
         this.repository = new StatistikaRepository();
 
-        setTitle("Statistics Dashboard");
+        setTitle("Statistiky systému");
         setSize(650, 420);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -32,11 +32,11 @@ public class StatistikaFrame extends JFrame {
         JPanel rootPanel = new JPanel(new BorderLayout(10, 10));
         rootPanel.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
-        JLabel titleLabel = new JLabel("Statistics Dashboard", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Statistiky systému", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         JPanel statsPanel = new JPanel(new GridLayout(5, 2, 15, 15));
-        statsPanel.setBorder(BorderFactory.createTitledBorder("System Overview"));
+        statsPanel.setBorder(BorderFactory.createTitledBorder("Přehled systému"));
 
         activeReservationsValue = new JLabel();
         activeRentalsValue = new JLabel();
@@ -44,16 +44,30 @@ public class StatistikaFrame extends JFrame {
         rentedEquipmentValue = new JLabel();
         totalRevenueValue = new JLabel();
 
-        addStatisticRow(statsPanel, "Active reservations:", activeReservationsValue);
-        addStatisticRow(statsPanel, "Active rentals:", activeRentalsValue);
-        addStatisticRow(statsPanel, "Available equipment:", availableEquipmentValue);
-        addStatisticRow(statsPanel, "Rented equipment:", rentedEquipmentValue);
-        addStatisticRow(statsPanel, "Total revenue:", totalRevenueValue);
+        addStatisticRow(statsPanel,
+                "Aktivní rezervace:",
+                activeReservationsValue);
 
-        JButton refreshButton = new JButton("Refresh");
+        addStatisticRow(statsPanel,
+                "Aktivní výpůjčky:",
+                activeRentalsValue);
+
+        addStatisticRow(statsPanel,
+                "Dostupné vybavení:",
+                availableEquipmentValue);
+
+        addStatisticRow(statsPanel,
+                "Zapůjčené vybavení:",
+                rentedEquipmentValue);
+
+        addStatisticRow(statsPanel,
+                "Celkový obrat:",
+                totalRevenueValue);
+
+        JButton refreshButton = new JButton("Obnovit");
         refreshButton.addActionListener(e -> loadStatistics());
 
-        JButton closeButton = new JButton("Close");
+        JButton closeButton = new JButton("Zavřít");
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();
@@ -67,7 +81,10 @@ public class StatistikaFrame extends JFrame {
         add(rootPanel);
     }
 
-    private void addStatisticRow(JPanel panel, String labelText, JLabel valueLabel) {
+    private void addStatisticRow(JPanel panel,
+                                 String labelText,
+                                 JLabel valueLabel) {
+
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Arial", Font.BOLD, 16));
 
@@ -80,10 +97,24 @@ public class StatistikaFrame extends JFrame {
     private void loadStatistics() {
         Statistika statistics = repository.loadStatistics();
 
-        activeReservationsValue.setText(String.valueOf(statistics.getActiveReservations()));
-        activeRentalsValue.setText(String.valueOf(statistics.getActiveRentals()));
-        availableEquipmentValue.setText(String.valueOf(statistics.getAvailableEquipment()));
-        rentedEquipmentValue.setText(String.valueOf(statistics.getRentedEquipment()));
-        totalRevenueValue.setText(statistics.getTotalRevenue() + " CZK");
+        activeReservationsValue.setText(
+                String.valueOf(statistics.getActiveReservations())
+        );
+
+        activeRentalsValue.setText(
+                String.valueOf(statistics.getActiveRentals())
+        );
+
+        availableEquipmentValue.setText(
+                String.valueOf(statistics.getAvailableEquipment())
+        );
+
+        rentedEquipmentValue.setText(
+                String.valueOf(statistics.getRentedEquipment())
+        );
+
+        totalRevenueValue.setText(
+                statistics.getTotalRevenue() + " Kč"
+        );
     }
 }

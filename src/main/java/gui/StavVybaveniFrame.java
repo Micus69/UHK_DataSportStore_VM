@@ -17,7 +17,7 @@ public class StavVybaveniFrame extends JFrame {
     public StavVybaveniFrame() {
         this.repository = new StavVybaveniRepository();
 
-        setTitle("Equipment States");
+        setTitle("Stavy vybavení");
         setSize(700, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -29,21 +29,27 @@ public class StavVybaveniFrame extends JFrame {
     private void initLayout() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        JLabel titleLabel = new JLabel("Equipment State Overview", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Přehled stavů vybavení", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
         tableModel = new DefaultTableModel(
-                new Object[]{"ID", "State Name", "Available", "Description"},
+                new Object[]{
+                        "ID",
+                        "Název stavu",
+                        "Dostupné",
+                        "Popis"
+                },
                 0
         );
 
         table = new JTable(tableModel);
+
         JScrollPane scrollPane = new JScrollPane(table);
 
-        JButton saveButton = new JButton("Save");
+        JButton saveButton = new JButton("Uložit");
         saveButton.addActionListener(e -> pushDataToDatabase());
 
-        JButton closeButton = new JButton("Close");
+        JButton closeButton = new JButton("Zavřít");
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();
@@ -81,14 +87,19 @@ public class StavVybaveniFrame extends JFrame {
         int selectedRow = table.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row first.");
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Nejprve vyberte řádek."
+            );
             return;
         }
 
         StavVybaveni state = new StavVybaveni();
 
         state.setStavVybaveniID(
-                Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString())
+                Integer.parseInt(
+                        tableModel.getValueAt(selectedRow, 0).toString()
+                )
         );
 
         state.setNazevStavu(
@@ -96,7 +107,9 @@ public class StavVybaveniFrame extends JFrame {
         );
 
         state.setJeDostupneProPujceni(
-                Boolean.parseBoolean(tableModel.getValueAt(selectedRow, 2).toString())
+                Boolean.parseBoolean(
+                        tableModel.getValueAt(selectedRow, 2).toString()
+                )
         );
 
         state.setPopisStavu(
@@ -105,7 +118,10 @@ public class StavVybaveniFrame extends JFrame {
 
         repository.update(state);
 
-        JOptionPane.showMessageDialog(this, "Data updated successfully.");
+        JOptionPane.showMessageDialog(
+                this,
+                "Data byla úspěšně aktualizována."
+        );
 
         loadDataFromDatabase();
     }

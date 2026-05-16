@@ -14,9 +14,10 @@ public class AktivniVypujckyFrame extends JFrame {
     private DefaultTableModel tableModel;
 
     public AktivniVypujckyFrame() {
+
         this.repository = new AktivniVypujckaRepository();
 
-        setTitle("Active Rentals");
+        setTitle("Aktivní výpůjčky");
         setSize(1150, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -26,26 +27,31 @@ public class AktivniVypujckyFrame extends JFrame {
     }
 
     private void initLayout() {
+
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JLabel titleLabel = new JLabel("Active Rentals Overview", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel(
+                "Přehled aktivních výpůjček",
+                SwingConstants.CENTER
+        );
+
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
         tableModel = new DefaultTableModel(
                 new Object[]{
-                        "Rental ID",
-                        "Customer",
+                        "ID výpůjčky",
+                        "Zákazník",
                         "Email",
-                        "Equipment",
-                        "Inventory No.",
-                        "Type",
-                        "Days",
-                        "Item Price",
-                        "Total Price",
-                        "Rental Date",
-                        "Planned Return",
-                        "Status"
+                        "Vybavení",
+                        "Inventární číslo",
+                        "Typ",
+                        "Počet dní",
+                        "Cena položky",
+                        "Celková cena",
+                        "Datum výpůjčky",
+                        "Plánované vrácení",
+                        "Stav"
                 },
                 0
         ) {
@@ -60,10 +66,10 @@ public class AktivniVypujckyFrame extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        JButton refreshButton = new JButton("Refresh");
+        JButton refreshButton = new JButton("Aktualizovat");
         refreshButton.addActionListener(e -> loadActiveRentals());
 
-        JButton closeButton = new JButton("Close");
+        JButton closeButton = new JButton("Zavřít");
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();
@@ -78,14 +84,18 @@ public class AktivniVypujckyFrame extends JFrame {
     }
 
     private void loadActiveRentals() {
+
         tableModel.setRowCount(0);
 
         List<AktivniVypujcka> rentals = repository.findAllActiveRentals();
 
         for (AktivniVypujcka rental : rentals) {
+
             tableModel.addRow(new Object[]{
                     rental.getVypujckaID(),
-                    rental.getZakaznikJmeno() + " " + rental.getZakaznikPrijmeni(),
+                    rental.getZakaznikJmeno()
+                            + " "
+                            + rental.getZakaznikPrijmeni(),
                     rental.getEmail(),
                     rental.getNazevVybaveni(),
                     rental.getInventarniCislo(),

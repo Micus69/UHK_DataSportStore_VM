@@ -6,7 +6,7 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     public MainFrame() {
-        setTitle("Sports Equipment Rental System");
+        setTitle("Systém půjčovny sportovního vybavení");
         setSize(700, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -17,15 +17,15 @@ public class MainFrame extends JFrame {
     private void initLayout() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        JLabel title = new JLabel("Sports Equipment Rental", SwingConstants.CENTER);
+        JLabel title = new JLabel("Půjčovna sportovního vybavení", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 26));
 
         JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 15, 15));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(40, 180, 40, 180));
 
-        JButton equipmentButton = new JButton("Available Equipment");
-        JButton reservationButton = new JButton("Create Reservation");
-        JButton loginButton = new JButton("Employee / Admin Login");
+        JButton equipmentButton = new JButton("Dostupné vybavení");
+        JButton reservationButton = new JButton("Vytvořit rezervaci");
+        JButton loginButton = new JButton("Přihlášení zaměstnance / administrátora");
 
         equipmentButton.addActionListener(e ->
                 new DostupneVybaveniFrame().setVisible(true)

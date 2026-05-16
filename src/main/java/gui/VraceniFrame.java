@@ -19,7 +19,7 @@ public class VraceniFrame extends JFrame {
     public VraceniFrame() {
         this.repository = new AktivniVypujckaRepository();
 
-        setTitle("Return Equipment");
+        setTitle("Vrácení vybavení");
         setSize(1150, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -32,23 +32,23 @@ public class VraceniFrame extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JLabel titleLabel = new JLabel("Return Equipment", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Vrácení vybavení", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
         tableModel = new DefaultTableModel(
                 new Object[]{
-                        "Rental ID",
-                        "Customer",
+                        "ID výpůjčky",
+                        "Zákazník",
                         "Email",
-                        "Equipment",
-                        "Inventory No.",
-                        "Type",
-                        "Days",
-                        "Item Price",
-                        "Total Price",
-                        "Rental Date",
-                        "Planned Return",
-                        "Status"
+                        "Vybavení",
+                        "Inventární číslo",
+                        "Typ",
+                        "Počet dní",
+                        "Cena položky",
+                        "Celková cena",
+                        "Datum výpůjčky",
+                        "Plánované vrácení",
+                        "Stav"
                 },
                 0
         ) {
@@ -63,13 +63,13 @@ public class VraceniFrame extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        JButton returnButton = new JButton("Return Selected Rental");
+        JButton returnButton = new JButton("Vrátit vybranou výpůjčku");
         returnButton.addActionListener(e -> returnSelectedRental());
 
-        JButton refreshButton = new JButton("Refresh");
+        JButton refreshButton = new JButton("Obnovit");
         refreshButton.addActionListener(e -> loadActiveRentals());
 
-        JButton closeButton = new JButton("Close");
+        JButton closeButton = new JButton("Zavřít");
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();
@@ -108,10 +108,14 @@ public class VraceniFrame extends JFrame {
     }
 
     private void returnSelectedRental() {
+
         int selectedRow = table.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select rental first.");
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Nejprve vyberte výpůjčku."
+            );
             return;
         }
 
@@ -121,8 +125,8 @@ public class VraceniFrame extends JFrame {
 
         int result = JOptionPane.showConfirmDialog(
                 this,
-                "Do you really want to return rental ID " + vypujckaID + "?",
-                "Confirm return",
+                "Opravdu chcete vrátit výpůjčku ID " + vypujckaID + "?",
+                "Potvrzení vrácení",
                 JOptionPane.YES_NO_OPTION
         );
 
@@ -132,7 +136,10 @@ public class VraceniFrame extends JFrame {
 
         repository.returnRental(vypujckaID, LocalDate.now());
 
-        JOptionPane.showMessageDialog(this, "Rental was successfully returned.");
+        JOptionPane.showMessageDialog(
+                this,
+                "Výpůjčka byla úspěšně vrácena."
+        );
 
         loadActiveRentals();
     }

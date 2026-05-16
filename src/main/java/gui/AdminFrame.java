@@ -18,11 +18,11 @@ public class AdminFrame extends JFrame {
         JPanel panel = new JPanel(new GridLayout(5, 1, 15, 15));
         panel.setBorder(BorderFactory.createEmptyBorder(40, 160, 40, 160));
 
-        JButton manageEquipmentButton = new JButton("Manage Equipment");
-        JButton manageEmployeesButton = new JButton("Manage Employees");
-        JButton manageCodeListsButton = new JButton("Manage Code Lists");
-        JButton statisticsButton = new JButton("Statistics Dashboard");
-        JButton closeButton = new JButton("Close");
+        JButton manageEquipmentButton = new JButton("Správa vybavení");
+        JButton manageEmployeesButton = new JButton("Správa zaměstnanců");
+        JButton manageCodeListsButton = new JButton("Správa čísel");
+        JButton statisticsButton = new JButton("Statistiky obchodu");
+        JButton closeButton = new JButton("Zavřít");
 
         manageEquipmentButton.addActionListener(e ->
                 new VybaveniManagementFrame().setVisible(true)

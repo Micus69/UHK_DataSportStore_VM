@@ -16,7 +16,7 @@ public class LoginFrame extends JFrame {
     public LoginFrame() {
         this.authRepository = new AuthRepository();
 
-        setTitle("Employee / Admin Login");
+        setTitle("Přihlášení zaměstnance / administrátora");
         setSize(400, 250);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -31,13 +31,13 @@ public class LoginFrame extends JFrame {
         loginField = new JTextField();
         passwordField = new JPasswordField();
 
-        JButton loginButton = new JButton("Login");
+        JButton loginButton = new JButton("Přihlásit se");
         loginButton.addActionListener(e -> login());
 
-        panel.add(new JLabel("Login:"));
+        panel.add(new JLabel("Přihlašovací jméno:"));
         panel.add(loginField);
 
-        panel.add(new JLabel("Password:"));
+        panel.add(new JLabel("Heslo:"));
         panel.add(passwordField);
 
         panel.add(new JLabel());
@@ -55,8 +55,8 @@ public class LoginFrame extends JFrame {
         if (zamestnanec == null) {
             JOptionPane.showMessageDialog(
                     this,
-                    "Invalid login or password.",
-                    "Login failed",
+                    "Neplatné přihlašovací jméno nebo heslo.",
+                    "Chyba přihlášení",
                     JOptionPane.ERROR_MESSAGE
             );
             return;
@@ -64,10 +64,17 @@ public class LoginFrame extends JFrame {
 
         if ("ADMIN".equalsIgnoreCase(zamestnanec.getRole())) {
             new AdminFrame().setVisible(true);
+
         } else if ("EMPLOYEE".equalsIgnoreCase(zamestnanec.getRole())) {
             new ZamestnanecFrame(zamestnanec).setVisible(true);
+
         } else {
-            JOptionPane.showMessageDialog(this, "Unknown user role.");
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Neplatné oprávnění uživatele.",
+                    "Chyba oprávnění",
+                    JOptionPane.ERROR_MESSAGE
+            );
             return;
         }
 

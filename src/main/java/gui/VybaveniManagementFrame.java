@@ -19,7 +19,7 @@ public class VybaveniManagementFrame extends JFrame {
     public VybaveniManagementFrame() {
         this.repository = new VybaveniRepository();
 
-        setTitle("Equipment Management");
+        setTitle("Správa vybavení");
         setSize(1100, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -32,20 +32,20 @@ public class VybaveniManagementFrame extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JLabel titleLabel = new JLabel("Equipment Management", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Správa vybavení", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
         tableModel = new DefaultTableModel(
                 new Object[]{
                         "ID",
-                        "Type ID",
-                        "State ID",
-                        "Purchase Date",
-                        "Inventory No.",
-                        "Name",
-                        "Notes",
-                        "Size",
-                        "Brand"
+                        "ID typu",
+                        "ID stavu",
+                        "Datum pořízení",
+                        "Inventární číslo",
+                        "Název",
+                        "Poznámky",
+                        "Velikost",
+                        "Značka"
                 },
                 0
         );
@@ -55,16 +55,16 @@ public class VybaveniManagementFrame extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        JButton addButton = new JButton("Add Equipment");
+        JButton addButton = new JButton("Přidat vybavení");
         addButton.addActionListener(e -> addEquipment());
 
-        JButton saveButton = new JButton("Save Selected");
+        JButton saveButton = new JButton("Uložit vybrané");
         saveButton.addActionListener(e -> saveSelectedEquipment());
 
-        JButton refreshButton = new JButton("Refresh");
+        JButton refreshButton = new JButton("Obnovit");
         refreshButton.addActionListener(e -> loadEquipment());
 
-        JButton closeButton = new JButton("Close");
+        JButton closeButton = new JButton("Zavřít");
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();
@@ -101,25 +101,31 @@ public class VybaveniManagementFrame extends JFrame {
     }
 
     private void addEquipment() {
+
         Vybaveni vybaveni = new Vybaveni(
                 0,
                 1,
                 1,
                 LocalDate.now(),
                 "NEW-001",
-                "New equipment",
+                "Nové vybavení",
                 "",
                 "M",
-                "Brand"
+                "Značka"
         );
 
         repository.insert(vybaveni);
+
         loadEquipment();
 
-        JOptionPane.showMessageDialog(this, "Equipment added successfully.");
+        JOptionPane.showMessageDialog(
+                this,
+                "Vybavení bylo úspěšně přidáno."
+        );
     }
 
     private void saveSelectedEquipment() {
+
         if (table.isEditing()) {
             table.getCellEditor().stopCellEditing();
         }
@@ -127,7 +133,10 @@ public class VybaveniManagementFrame extends JFrame {
         int selectedRow = table.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row first.");
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Nejprve vyberte řádek."
+            );
             return;
         }
 
@@ -144,8 +153,12 @@ public class VybaveniManagementFrame extends JFrame {
         );
 
         repository.update(vybaveni);
+
         loadEquipment();
 
-        JOptionPane.showMessageDialog(this, "Equipment updated successfully.");
+        JOptionPane.showMessageDialog(
+                this,
+                "Vybavení bylo úspěšně aktualizováno."
+        );
     }
 }

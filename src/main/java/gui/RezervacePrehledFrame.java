@@ -22,7 +22,7 @@ public class RezervacePrehledFrame extends JFrame {
         this.zamestnanec = zamestnanec;
         this.repository = new VypujckaRepository();
 
-        setTitle("Active Reservations");
+        setTitle("Aktivní rezervace");
         setSize(850, 450);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,11 +35,17 @@ public class RezervacePrehledFrame extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JLabel titleLabel = new JLabel("Active Reservations", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Aktivní rezervace", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
         tableModel = new DefaultTableModel(
-                new Object[]{"Reservation ID", "Customer", "Date From", "Date To", "Status"},
+                new Object[]{
+                        "ID rezervace",
+                        "Zákazník",
+                        "Datum od",
+                        "Datum do",
+                        "Stav rezervace"
+                },
                 0
         ) {
             @Override
@@ -53,13 +59,13 @@ public class RezervacePrehledFrame extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        JButton createRentalButton = new JButton("Create Rental From Reservation");
+        JButton createRentalButton = new JButton("Vytvořit výpůjčku z rezervace");
         createRentalButton.addActionListener(e -> createRentalFromSelectedReservation());
 
-        JButton refreshButton = new JButton("Refresh");
+        JButton refreshButton = new JButton("Obnovit");
         refreshButton.addActionListener(e -> loadReservations());
 
-        JButton closeButton = new JButton("Close");
+        JButton closeButton = new JButton("Zavřít");
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();
@@ -91,14 +97,20 @@ public class RezervacePrehledFrame extends JFrame {
     }
 
     private void createRentalFromSelectedReservation() {
+
         int selectedRow = table.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select reservation first.");
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Nejprve vyberte rezervaci."
+            );
             return;
         }
 
-        int rezervaceID = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
+        int rezervaceID = Integer.parseInt(
+                tableModel.getValueAt(selectedRow, 0).toString()
+        );
 
         LocalDate today = LocalDate.now();
         LocalDate plannedReturn = today.plusDays(3);
@@ -110,7 +122,10 @@ public class RezervacePrehledFrame extends JFrame {
                 plannedReturn
         );
 
-        JOptionPane.showMessageDialog(this, "Rental was successfully created from reservation.");
+        JOptionPane.showMessageDialog(
+                this,
+                "Výpůjčka byla úspěšně vytvořena z rezervace."
+        );
 
         loadReservations();
     }

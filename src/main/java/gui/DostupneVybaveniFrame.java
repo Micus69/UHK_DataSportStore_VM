@@ -16,7 +16,7 @@ public class DostupneVybaveniFrame extends JFrame {
     public DostupneVybaveniFrame() {
         this.repository = new DostupneVybaveniRepository();
 
-        setTitle("Available Equipment");
+        setTitle("Dostupné vybavení");
         setSize(900, 450);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -28,35 +28,35 @@ public class DostupneVybaveniFrame extends JFrame {
     private void initLayout() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        JLabel titleLabel = new JLabel("Available Equipment Overview", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Přehled dostupného vybavení", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
         tableModel = new DefaultTableModel(
                 new Object[]{
                         "ID",
-                        "Name",
-                        "Inventory No.",
-                        "Brand",
-                        "Size",
-                        "Type",
-                        "Price / Day",
-                        "Status"
+                        "Název",
+                        "Inventární číslo",
+                        "Značka",
+                        "Velikost",
+                        "Typ",
+                        "Cena / den",
+                        "Stav"
                 },
                 0
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Customer view is read-only.
+                return false; // Zákaznický pohled je pouze pro čtení.
             }
         };
 
         JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
 
-        JButton refreshButton = new JButton("Refresh");
+        JButton refreshButton = new JButton("Aktualizovat");
         refreshButton.addActionListener(e -> loadDataFromDatabase());
 
-        JButton closeButton = new JButton("Back");
+        JButton closeButton = new JButton("Zpět");
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();

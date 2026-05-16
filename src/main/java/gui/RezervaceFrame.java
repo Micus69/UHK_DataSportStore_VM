@@ -41,7 +41,7 @@ public class RezervaceFrame extends JFrame {
         this.rezervaceRepository = new RezervaceRepository();
         this.vybaveniRepository = new DostupneVybaveniRepository();
 
-        setTitle("Create Reservation");
+        setTitle("Vytvoření rezervace");
         setSize(1100, 650);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -54,7 +54,7 @@ public class RezervaceFrame extends JFrame {
         JPanel rootPanel = new JPanel(new BorderLayout(10, 10));
         rootPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JLabel titleLabel = new JLabel("Create Customer Reservation", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Vytvoření zákaznické rezervace", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         JPanel customerPanel = createCustomerPanel();
@@ -65,15 +65,15 @@ public class RezervaceFrame extends JFrame {
 
         tableModel = new DefaultTableModel(
                 new Object[]{
-                        "Select",
+                        "Vybrat",
                         "ID",
-                        "Name",
-                        "Inventory No.",
-                        "Brand",
-                        "Size",
-                        "Type",
-                        "Price / Day",
-                        "Status"
+                        "Název",
+                        "Inventární číslo",
+                        "Značka",
+                        "Velikost",
+                        "Typ",
+                        "Cena / den",
+                        "Stav"
                 },
                 0
         ) {
@@ -105,12 +105,12 @@ public class RezervaceFrame extends JFrame {
         equipmentTable.getColumnModel().getColumn(8).setPreferredWidth(90);
 
         JScrollPane scrollPane = new JScrollPane(equipmentTable);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("Available Equipment"));
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Dostupné vybavení"));
 
-        JButton createButton = new JButton("Create Reservation");
+        JButton createButton = new JButton("Vytvořit rezervaci");
         createButton.addActionListener(e -> createReservation());
 
-        JButton closeButton = new JButton("Back");
+        JButton closeButton = new JButton("Zpět");
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 5));
@@ -126,7 +126,7 @@ public class RezervaceFrame extends JFrame {
 
     private JPanel createCustomerPanel() {
         JPanel customerPanel = new JPanel(new GridBagLayout());
-        customerPanel.setBorder(BorderFactory.createTitledBorder("Customer Information"));
+        customerPanel.setBorder(BorderFactory.createTitledBorder("Informace o zákazníkovi"));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(6, 8, 6, 8);
@@ -163,11 +163,25 @@ public class RezervaceFrame extends JFrame {
         JPanel dateFromPanel = createDatePanel(dayFromBox, monthFromBox, yearFromBox);
         JPanel dateToPanel = createDatePanel(dayToBox, monthToBox, yearToBox);
 
-        addFormRow(customerPanel, gbc, 0, "First name:", jmenoField, "Last name:", prijmeniField);
-        addFormRow(customerPanel, gbc, 1, "Email:", emailField, "Phone:", telefonField);
-        addFormRow(customerPanel, gbc, 2, "Street:", uliceField, "House number:", cisloPopisneField);
-        addFormRow(customerPanel, gbc, 3, "City:", mestoField, "ZIP code:", pscField);
-        addFormRowPanel(customerPanel, gbc, 4, "Date from:", dateFromPanel, "Date to:", dateToPanel);
+        addFormRow(customerPanel, gbc, 0,
+                "Jméno:", jmenoField,
+                "Příjmení:", prijmeniField);
+
+        addFormRow(customerPanel, gbc, 1,
+                "Email:", emailField,
+                "Telefon:", telefonField);
+
+        addFormRow(customerPanel, gbc, 2,
+                "Ulice:", uliceField,
+                "Číslo popisné:", cisloPopisneField);
+
+        addFormRow(customerPanel, gbc, 3,
+                "Město:", mestoField,
+                "PSČ:", pscField);
+
+        addFormRowPanel(customerPanel, gbc, 4,
+                "Datum od:", dateFromPanel,
+                "Datum do:", dateToPanel);
 
         return customerPanel;
     }
@@ -180,6 +194,7 @@ public class RezervaceFrame extends JFrame {
         panel.add(dayBox);
         panel.add(monthBox);
         panel.add(yearBox);
+
         return panel;
     }
 
@@ -301,6 +316,7 @@ public class RezervaceFrame extends JFrame {
 
     private void createReservation() {
         try {
+
             if (equipmentTable.isEditing()) {
                 equipmentTable.getCellEditor().stopCellEditing();
             }
@@ -309,12 +325,14 @@ public class RezervaceFrame extends JFrame {
             LocalDate datumDo = getDateFromBoxes(dayToBox, monthToBox, yearToBox);
 
             if (datumOd.isBefore(LocalDate.now())) {
-                JOptionPane.showMessageDialog(this, "Date from cannot be in the past.");
+                JOptionPane.showMessageDialog(this,
+                        "Datum od nemůže být v minulosti.");
                 return;
             }
 
             if (datumDo.isBefore(datumOd)) {
-                JOptionPane.showMessageDialog(this, "Date to cannot be before date from.");
+                JOptionPane.showMessageDialog(this,
+                        "Datum do nemůže být před datem od.");
                 return;
             }
 
@@ -324,13 +342,17 @@ public class RezervaceFrame extends JFrame {
                 Boolean selected = (Boolean) tableModel.getValueAt(i, 0);
 
                 if (Boolean.TRUE.equals(selected)) {
-                    int vybaveniID = Integer.parseInt(tableModel.getValueAt(i, 1).toString());
+                    int vybaveniID = Integer.parseInt(
+                            tableModel.getValueAt(i, 1).toString()
+                    );
+
                     selectedEquipmentIds.add(vybaveniID);
                 }
             }
 
             if (selectedEquipmentIds.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please select at least one equipment item.");
+                JOptionPane.showMessageDialog(this,
+                        "Vyberte alespoň jedno vybavení.");
                 return;
             }
 
@@ -351,15 +373,17 @@ public class RezervaceFrame extends JFrame {
 
             rezervaceRepository.createReservation(rezervace);
 
-            JOptionPane.showMessageDialog(this, "Reservation successfully created.");
+            JOptionPane.showMessageDialog(this,
+                    "Rezervace byla úspěšně vytvořena.");
 
             loadAvailableEquipment();
 
         } catch (Exception e) {
+
             JOptionPane.showMessageDialog(
                     this,
-                    "Reservation failed. Please check all entered values.",
-                    "Error",
+                    "Vytvoření rezervace selhalo. Zkontrolujte zadané údaje.",
+                    "Chyba",
                     JOptionPane.ERROR_MESSAGE
             );
 

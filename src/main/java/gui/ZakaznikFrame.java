@@ -7,7 +7,7 @@ public class ZakaznikFrame extends JFrame {
 
     public ZakaznikFrame() {
 
-        setTitle("Customer Registration");
+        setTitle("Registrace zákazníka");
         setSize(650, 450);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -32,43 +32,38 @@ public class ZakaznikFrame extends JFrame {
         JTextField houseNumberField = new JTextField();
         JTextField zipCodeField = new JTextField();
 
-        JButton registerButton = new JButton("Register Customer");
+        JButton registerButton = new JButton("Registrovat zákazníka");
 
         registerButton.addActionListener(e -> {
 
-            /*
-             * Later this logic will call ZakaznikService
-             * and save customer information into MySQL.
-             */
-
             JOptionPane.showMessageDialog(
                     this,
-                    "Customer successfully registered."
+                    "Zákazník byl úspěšně zaregistrován."
             );
         });
 
-        panel.add(new JLabel("First Name:"));
+        panel.add(new JLabel("Jméno:"));
         panel.add(firstNameField);
 
-        panel.add(new JLabel("Last Name:"));
+        panel.add(new JLabel("Příjmení:"));
         panel.add(lastNameField);
 
         panel.add(new JLabel("Email:"));
         panel.add(emailField);
 
-        panel.add(new JLabel("Phone:"));
+        panel.add(new JLabel("Telefon:"));
         panel.add(phoneField);
 
-        panel.add(new JLabel("City:"));
+        panel.add(new JLabel("Město:"));
         panel.add(cityField);
 
-        panel.add(new JLabel("Street:"));
+        panel.add(new JLabel("Ulice:"));
         panel.add(streetField);
 
-        panel.add(new JLabel("House Number:"));
+        panel.add(new JLabel("Číslo popisné:"));
         panel.add(houseNumberField);
 
-        panel.add(new JLabel("ZIP Code:"));
+        panel.add(new JLabel("PSČ:"));
         panel.add(zipCodeField);
 
         panel.add(new JLabel());
