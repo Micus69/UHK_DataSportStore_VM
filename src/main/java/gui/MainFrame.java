@@ -1,3 +1,9 @@
+/*
+ * Main application window.
+ * Serves as the primary navigation menu
+ * for customers, employees and administrators.
+ */
+
 package gui;
 
 import javax.swing.*;
@@ -6,37 +12,74 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     public MainFrame() {
+
         setTitle("Systém půjčovny sportovního vybavení");
+
         setSize(700, 400);
+
         setLocationRelativeTo(null);
+
+        // Closes entire application after window exit.
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         initLayout();
     }
 
+    /*
+     * Creates main application layout
+     * and navigation buttons.
+     */
     private void initLayout() {
+
         JPanel panel = new JPanel(new BorderLayout());
 
-        JLabel title = new JLabel("Půjčovna sportovního vybavení", SwingConstants.CENTER);
+        // Main application title.
+        JLabel title = new JLabel(
+                "Půjčovna sportovního vybavení",
+                SwingConstants.CENTER
+        );
+
         title.setFont(new Font("Arial", Font.BOLD, 26));
 
-        JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 15, 15));
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(40, 180, 40, 180));
+        JPanel buttonPanel =
+                new JPanel(new GridLayout(3, 1, 15, 15));
 
-        JButton equipmentButton = new JButton("Dostupné vybavení");
-        JButton reservationButton = new JButton("Vytvořit rezervaci");
-        JButton loginButton = new JButton("Přihlášení zaměstnance / administrátora");
-
-        equipmentButton.addActionListener(e ->
-                new DostupneVybaveniFrame().setVisible(true)
+        buttonPanel.setBorder(
+                BorderFactory.createEmptyBorder(
+                        40,
+                        180,
+                        40,
+                        180
+                )
         );
 
-        reservationButton.addActionListener(e ->
-                new RezervaceFrame().setVisible(true)
+        // Opens customer equipment overview.
+        JButton equipmentButton =
+                new JButton("Dostupné vybavení");
+
+        // Opens reservation creation window.
+        JButton reservationButton =
+                new JButton("Vytvořit rezervaci");
+
+        // Opens employee / administrator login window.
+        JButton loginButton =
+                new JButton(
+                        "Přihlášení zaměstnance / administrátora"
+                );
+
+        equipmentButton.addActionListener(
+                e -> new DostupneVybaveniFrame()
+                        .setVisible(true)
         );
 
-        loginButton.addActionListener(e ->
-                new LoginFrame().setVisible(true)
+        reservationButton.addActionListener(
+                e -> new RezervaceFrame()
+                        .setVisible(true)
+        );
+
+        loginButton.addActionListener(
+                e -> new LoginFrame()
+                        .setVisible(true)
         );
 
         buttonPanel.add(equipmentButton);

@@ -1,3 +1,9 @@
+/*
+ * Login window used for employee and administrator authentication.
+ * The frame verifies login credentials and opens the correct panel
+ * based on the user role stored in the database.
+ */
+
 package gui;
 
 import model.Zamestnanec;
@@ -14,6 +20,8 @@ public class LoginFrame extends JFrame {
     private JPasswordField passwordField;
 
     public LoginFrame() {
+
+        // Repository responsible for authentication queries.
         this.authRepository = new AuthRepository();
 
         setTitle("Přihlášení zaměstnance / administrátora");
@@ -24,7 +32,11 @@ public class LoginFrame extends JFrame {
         initLayout();
     }
 
+    /*
+     * Creates login form layout and input components.
+     */
     private void initLayout() {
+
         JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
@@ -32,6 +44,8 @@ public class LoginFrame extends JFrame {
         passwordField = new JPasswordField();
 
         JButton loginButton = new JButton("Přihlásit se");
+
+        // Calls authentication method after button click.
         loginButton.addActionListener(e -> login());
 
         panel.add(new JLabel("Přihlašovací jméno:"));
@@ -46,38 +60,57 @@ public class LoginFrame extends JFrame {
         add(panel);
     }
 
+    /*
+     * Verifies user credentials against database
+     * and opens the correct application panel
+     * based on the assigned role.
+     */
     private void login() {
+
         String login = loginField.getText();
         String password = new String(passwordField.getPassword());
 
-        Zamestnanec zamestnanec = authRepository.login(login, password);
+        // Attempts database authentication.
+        Zamestnanec zamestnanec =
+                authRepository.login(login, password);
 
+        // Authentication failed.
         if (zamestnanec == null) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Neplatné přihlašovací jméno nebo heslo.",
                     "Chyba přihlášení",
                     JOptionPane.ERROR_MESSAGE
             );
+
             return;
         }
 
+        // Opens administrator panel.
         if ("ADMIN".equalsIgnoreCase(zamestnanec.getRole())) {
+
             new AdminFrame().setVisible(true);
 
+            // Opens employee panel.
         } else if ("EMPLOYEE".equalsIgnoreCase(zamestnanec.getRole())) {
+
             new ZamestnanecFrame(zamestnanec).setVisible(true);
 
+            // Invalid database role.
         } else {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Neplatné oprávnění uživatele.",
                     "Chyba oprávnění",
                     JOptionPane.ERROR_MESSAGE
             );
+
             return;
         }
 
+        // Closes login window after successful authentication.
         dispose();
     }
 }

@@ -1,71 +1,16 @@
+
+DELIMITER $$
+
 /*
 ===========================================================
-FILE: 06_triggers.sql
+TRIGGER: TRG_RezervacePolozka_AfterInsert
 ===========================================================
 
 Description:
-This file contains database triggers used for automatic
-equipment state management within the sports equipment
-rental system.
-
-Purpose:
-The triggers automate database operations related to
-equipment availability and rental status changes.
-
-Main functionality:
-- Automatically updates equipment status after reservation
-- Automatically updates equipment status after rental creation
-- Automatically restores equipment availability after return
-- Ensures database consistency without requiring application logic
-
-Triggers overview:
-1. TRG_RezervacePolozka_AfterInsert
-   - Triggered after a reservation item is created
-   - Changes equipment status to "Reserved"
-
-2. TRG_VypujckaPolozka_AfterInsert
-   - Triggered after a rental item is created
-   - Changes equipment status to "Rented"
-
-3. TRG_Vypujcka_AfterUpdate
-   - Triggered after a rental is updated
-   - Detects returned rentals
-   - Changes equipment status back to "Available"
-
-Technical details:
-- Uses AFTER INSERT and AFTER UPDATE events
-- Uses NEW and OLD row references
-- Automatically synchronizes equipment availability
-- Reduces application-side update logic
-- Ensures consistent equipment states
-
-Advantages:
-- Automatic data synchronization
-- Reduced duplicated logic in application code
-- Improved data integrity
-- Centralized business rules
-- Real-time equipment state updates
-
-Used tables:
-- RezervacePolozka
-- VypujckaPolozka
-- Vypujcka
-- Vybaveni
-- StavVybaveni
-
-Equipment states used:
-- Rezervovane (Reserved)
-- Zapujcene (Rented)
-- Dostupne (Available)
-
-Designed for:
-- MySQL database engine
-- Spring Boot integration
-- Automatic equipment state management
+Automatically changes equipment state
+to "Rezervovane" after reservation creation.
 ===========================================================
 */
-
-DELIMITER $$
 
 CREATE TRIGGER TRG_RezervacePolozka_AfterInsert
     AFTER INSERT ON RezervacePolozka
@@ -81,6 +26,17 @@ BEGIN
     WHERE VybaveniID = NEW.VybaveniID;
 END$$
 
+/*
+===========================================================
+TRIGGER: TRG_VypujckaPolozka_AfterInsert
+===========================================================
+
+Description:
+Automatically changes equipment state
+to "Zapujcene" after rental creation.
+===========================================================
+*/
+
 CREATE TRIGGER TRG_VypujckaPolozka_AfterInsert
     AFTER INSERT ON VypujckaPolozka
     FOR EACH ROW
@@ -94,6 +50,17 @@ BEGIN
     )
     WHERE VybaveniID = NEW.VybaveniID;
 END$$
+
+/*
+===========================================================
+TRIGGER: TRG_Vypujcka_AfterUpdate
+===========================================================
+
+Description:
+Automatically restores equipment state
+to "Dostupne" after rental return.
+===========================================================
+*/
 
 CREATE TRIGGER TRG_Vypujcka_AfterUpdate
     AFTER UPDATE ON Vypujcka

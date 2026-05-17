@@ -1,35 +1,15 @@
 /*
 
-Description:
-This file contains the physical database schema definition
-for the sports equipment rental system.
-
-Purpose:
-The schema defines all database tables, relationships,
-constraints, and integrity rules required for the application.
-
-Main functionality:
-- Defines primary keys and foreign keys
-- Defines entity relationships
-- Enforces data integrity using constraints
-- Prevents invalid or inconsistent data
-- Supports reservations and rentals of multiple equipment items
-- Supports customer and employee management
-
-Database design:
-The schema is normalized and designed using relational
-database principles.
-
 Main entities:
-- Employees
-- Customers
-- Equipment
-- Equipment types
-- Equipment states
-- Reservations
-- Rentals
-- Reservation items
-- Rental items
+- Zamestnanec
+- TypVybaveni
+- StavVybaveni
+- Vybaveni
+- Zakaznik
+- Rezervace
+- RezervacePolozka
+- Vypujcka
+- VypujckaPolozka
 
 Main features:
 - One reservation can contain multiple equipment items
@@ -39,19 +19,6 @@ Main features:
 - Data validation is enforced using CHECK constraints
 - Relational integrity is enforced using FOREIGN KEY constraints
 
-Integrity constraints:
-- PRIMARY KEY
-- FOREIGN KEY
-- UNIQUE
-- NOT NULL
-- CHECK constraints
-
-The schema is designed for:
-- Spring Boot integration
-- MySQL database engine
-- Docker container deployment
-- Repository and ORM mapping using JPA/Hibernate
-===========================================================
 */
 
 CREATE TABLE Zamestnanec (

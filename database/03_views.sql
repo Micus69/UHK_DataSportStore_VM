@@ -4,29 +4,8 @@ VIEW: Pohled_AktivniVypujcky
 ===========================================================
 
 Description:
-This view provides an overview of all currently active rentals
-that have not yet been returned.
-
-Purpose:
-The view combines information from rentals, customers,
-employees, equipment, and equipment types into a single
-readable dataset.
-
-Main functionality:
-- Displays active rental records
-- Shows customer information
-- Shows rented equipment details
-- Displays rental pricing information
-- Displays employee responsible for the rental
-- Filters only rentals where the equipment has not yet been returned
-
-Used tables:
-- Vypujcka
-- VypujckaPolozka
-- Vybaveni
-- TypVybaveni
-- Zakaznik
-- Zamestnanec
+View showing all currently active rentals
+including customers, equipment and rental details.
 ===========================================================
 */
 
@@ -63,22 +42,8 @@ VIEW: Pohled_DostupneVybaveni
 ===========================================================
 
 Description:
-This view displays all equipment currently available for rental.
-
-Purpose:
-The view simplifies access to available equipment and combines
-equipment information, equipment type, pricing, and equipment status.
-
-Main functionality:
-- Displays only available equipment
-- Shows equipment type and pricing
-- Displays inventory information
-- Used for employee and customer equipment overview
-
-Used tables:
-- Vybaveni
-- TypVybaveni
-- StavVybaveni
+View showing all equipment currently available
+for rental including type, price and equipment state.
 ===========================================================
 */
 
@@ -97,32 +62,17 @@ FROM Vybaveni vyb
          JOIN StavVybaveni sv ON vyb.StavVybaveniID = sv.StavVybaveniID
 WHERE sv.JeDostupneProPujceni = TRUE;
 
-
 /*
 ===========================================================
 VIEW: Pohled_RezervaceDetail
 ===========================================================
 
 Description:
-This view provides detailed information about reservations.
-
-Purpose:
-The view combines reservation records with customers
-and reserved equipment into a single overview.
-
-Main functionality:
-- Displays reservation details
-- Shows customer information
-- Displays reserved equipment
-- Displays reservation dates and status
-
-Used tables:
-- Rezervace
-- RezervacePolozka
-- Vybaveni
-- Zakaznik
+View showing reservation details together with
+customer and reserved equipment information.
 ===========================================================
 */
+
 
 CREATE VIEW Pohled_RezervaceDetail AS
 SELECT

@@ -1,3 +1,13 @@
+/*
+ * Employee management window.
+ *
+ * Main functionality:
+ * - Displays all employees
+ * - Adds new employee records
+ * - Updates selected employee data
+ * - Allows administrator to manage user roles
+ */
+
 package gui;
 
 import model.ZamestnanecAdmin;
@@ -28,6 +38,10 @@ public class ZamestnanecManagementFrame extends JFrame {
         loadEmployees();
     }
 
+    /*
+     * Creates employee management layout
+     * with table and control buttons.
+     */
     private void initLayout() {
 
         JPanel panel = new JPanel(new BorderLayout(10, 10));
@@ -80,6 +94,10 @@ public class ZamestnanecManagementFrame extends JFrame {
         add(panel);
     }
 
+    /*
+     * Loads employees from database
+     * and displays them inside JTable.
+     */
     private void loadEmployees() {
 
         tableModel.setRowCount(0);
@@ -100,6 +118,10 @@ public class ZamestnanecManagementFrame extends JFrame {
         }
     }
 
+    /*
+     * Creates a new employee with default values.
+     * The values can be edited later directly in the table.
+     */
     private void addEmployee() {
 
         ZamestnanecAdmin employee = new ZamestnanecAdmin(
@@ -114,7 +136,6 @@ public class ZamestnanecManagementFrame extends JFrame {
         );
 
         repository.insert(employee);
-
         loadEmployees();
 
         JOptionPane.showMessageDialog(
@@ -123,6 +144,11 @@ public class ZamestnanecManagementFrame extends JFrame {
         );
     }
 
+    /*
+     * Reads selected table row,
+     * creates employee object
+     * and updates employee record in database.
+     */
     private void saveSelectedEmployee() {
 
         if (table.isEditing()) {
@@ -151,7 +177,6 @@ public class ZamestnanecManagementFrame extends JFrame {
         );
 
         repository.update(employee);
-
         loadEmployees();
 
         JOptionPane.showMessageDialog(

@@ -1,3 +1,13 @@
+/*
+===========================================================
+FUNCTION: PocetDniVypujcky
+===========================================================
+
+Description:
+Returns the total number of rental days
+between two selected dates.
+===========================================================
+*/
 
 DELIMITER $$
 
@@ -18,6 +28,17 @@ BEGIN
 
     RETURN v_PocetDni;
 END$$
+
+/*
+===========================================================
+FUNCTION: VypocetCenyPolozky
+===========================================================
+
+Description:
+Calculates total rental price for selected
+equipment based on rental duration.
+===========================================================
+*/
 
 CREATE FUNCTION VypocetCenyPolozky(
     p_VybaveniID INT,

@@ -1,3 +1,13 @@
+/*
+ * Repository responsible for employee management.
+ *
+ * Main functionality:
+ * - Loads employee records
+ * - Creates new employees
+ * - Updates existing employees
+ * - Transfers employee data between database and GUI
+ */
+
 package repository;
 
 import model.ZamestnanecAdmin;
@@ -8,8 +18,14 @@ import java.util.List;
 
 public class ZamestnanecRepository {
 
+    /*
+     * Loads all employees from database.
+     */
     public List<ZamestnanecAdmin> findAll() {
-        List<ZamestnanecAdmin> employees = new ArrayList<>();
+
+        // Collection storing employee records.
+        List<ZamestnanecAdmin> employees =
+                new ArrayList<>();
 
         String sql = """
                 SELECT ZamestnanecID, DatumNastupu, Heslo, Jmeno,
@@ -23,7 +39,10 @@ public class ZamestnanecRepository {
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery()
         ) {
+
+            // Converts database rows into model objects.
             while (resultSet.next()) {
+
                 employees.add(new ZamestnanecAdmin(
                         resultSet.getInt("ZamestnanecID"),
                         resultSet.getDate("DatumNastupu").toLocalDate(),
@@ -37,13 +56,19 @@ public class ZamestnanecRepository {
             }
 
         } catch (Exception e) {
+
+            // Prints database loading error.
             e.printStackTrace();
         }
 
         return employees;
     }
 
+    /*
+     * Inserts new employee into database.
+     */
     public void insert(ZamestnanecAdmin employee) {
+
         String sql = """
                 INSERT INTO Zamestnanec
                 (DatumNastupu, Heslo, Jmeno, Login, Pozice, Prijmeni, Role)
@@ -54,6 +79,8 @@ public class ZamestnanecRepository {
                 Connection connection = DBConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)
         ) {
+
+            // Maps employee object values into SQL query.
             statement.setDate(1, Date.valueOf(employee.getDatumNastupu()));
             statement.setString(2, employee.getHeslo());
             statement.setString(3, employee.getJmeno());
@@ -62,15 +89,24 @@ public class ZamestnanecRepository {
             statement.setString(6, employee.getPrijmeni());
             statement.setString(7, employee.getRole());
 
+            // Executes INSERT query.
             statement.executeUpdate();
 
         } catch (Exception e) {
+
             e.printStackTrace();
-            throw new RuntimeException("Employee insert failed.");
+
+            throw new RuntimeException(
+                    "Employee insert failed."
+            );
         }
     }
 
+    /*
+     * Updates existing employee record.
+     */
     public void update(ZamestnanecAdmin employee) {
+
         String sql = """
                 UPDATE Zamestnanec
                 SET DatumNastupu = ?,
@@ -87,6 +123,8 @@ public class ZamestnanecRepository {
                 Connection connection = DBConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)
         ) {
+
+            // Maps updated employee values into SQL query.
             statement.setDate(1, Date.valueOf(employee.getDatumNastupu()));
             statement.setString(2, employee.getHeslo());
             statement.setString(3, employee.getJmeno());
@@ -96,11 +134,16 @@ public class ZamestnanecRepository {
             statement.setString(7, employee.getRole());
             statement.setInt(8, employee.getZamestnanecID());
 
+            // Executes UPDATE query.
             statement.executeUpdate();
 
         } catch (Exception e) {
+
             e.printStackTrace();
-            throw new RuntimeException("Employee update failed.");
+
+            throw new RuntimeException(
+                    "Employee update failed."
+            );
         }
     }
 }

@@ -1,13 +1,5 @@
 /*
 
-Description:
-This file contains initial sample data for the database.
-
-Purpose:
-The seed data is used to populate the database with
-basic records required for testing and demonstration
-of the application functionality.
-
 Main functionality:
 - Inserts employees and application roles
 - Inserts equipment types and pricing
@@ -16,12 +8,6 @@ Main functionality:
 - Inserts customer records
 - Inserts reservation records
 - Inserts rental records and rental items
-
-The inserted data can be used for:
-- application testing
-- development purposes
-- presentation and demonstration
-- validation of database relationships
 
 Used tables:
 - Zamestnanec

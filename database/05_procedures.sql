@@ -1,3 +1,14 @@
+/*
+===========================================================
+PROCEDURE: VytvorVypujckuZRezervace
+===========================================================
+
+Description:
+Creates rental from selected reservation,
+calculates prices and updates equipment states.
+===========================================================
+*/
+
 DROP PROCEDURE IF EXISTS VytvorVypujckuZRezervace;
 DROP PROCEDURE IF EXISTS VratVypujcku;
 
@@ -96,6 +107,17 @@ BEGIN
 
     COMMIT;
 END$$
+
+/*
+===========================================================
+PROCEDURE: VratVypujcku
+===========================================================
+
+Description:
+Marks rental as returned and completes
+the rental process.
+===========================================================
+*/
 
 CREATE PROCEDURE VratVypujcku(
     IN p_VypujckaID INT,

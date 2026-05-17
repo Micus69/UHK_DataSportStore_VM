@@ -1,3 +1,12 @@
+/*
+ * Repository responsible for active rental operations.
+ *
+ * Main functionality:
+ * - Loads active rentals from database view
+ * - Calls stored procedure for rental return
+ * - Transfers rental data between database and GUI
+ */
+
 package repository;
 
 import model.AktivniVypujcka;
@@ -9,6 +18,10 @@ import java.util.List;
 
 public class AktivniVypujckaRepository {
 
+    /*
+     * Loads all active rentals from database view.
+     * View Pohled_AktivniVypujcky already joins all required tables.
+     */
     public List<AktivniVypujcka> findAllActiveRentals() {
         List<AktivniVypujcka> rentals = new ArrayList<>();
 
@@ -62,6 +75,10 @@ public class AktivniVypujckaRepository {
         return rentals;
     }
 
+    /*
+     * Returns selected rental using stored procedure VratVypujcku.
+     * The procedure updates rental return date and rental status.
+     */
     public void returnRental(int vypujckaID, LocalDate returnDate) {
         String sql = "{CALL VratVypujcku(?, ?)}";
 
@@ -71,7 +88,6 @@ public class AktivniVypujckaRepository {
         ) {
             statement.setInt(1, vypujckaID);
             statement.setDate(2, Date.valueOf(returnDate));
-
             statement.execute();
 
         } catch (Exception e) {

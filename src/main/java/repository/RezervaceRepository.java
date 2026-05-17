@@ -1,3 +1,13 @@
+/*
+ * Repository responsible for reservation creation.
+ *
+ * Main functionality:
+ * - Creates customer record
+ * - Creates reservation record
+ * - Stores selected equipment into reservation items
+ * - Uses transaction to keep reservation data consistent
+ */
+
 package repository;
 
 import model.Rezervace;
@@ -9,7 +19,14 @@ import java.sql.Statement;
 
 public class RezervaceRepository {
 
+    /*
+     * Creates a complete reservation workflow.
+     *
+     * The method inserts customer, reservation and reservation items
+     * in one transaction. If any step fails, the whole operation fails.
+     */
     public void createReservation(Rezervace rezervace) {
+
         String insertCustomerSql = """
                 INSERT INTO Zakaznik
                 (ZamestnanecID, Ulice, CisloPopisne, Mesto, PSC,
@@ -30,11 +47,16 @@ public class RezervaceRepository {
                 """;
 
         try (Connection connection = DBConnection.getConnection()) {
+
+            // Transaction ensures that customer, reservation and items are saved together.
             connection.setAutoCommit(false);
 
             int zakaznikID;
             int rezervaceID;
 
+            /*
+             * Inserts customer data and reads generated customer ID.
+             */
             try (
                     PreparedStatement customerStatement =
                             connection.prepareStatement(insertCustomerSql, Statement.RETURN_GENERATED_KEYS)
@@ -60,6 +82,9 @@ public class RezervaceRepository {
                 }
             }
 
+            /*
+             * Inserts reservation header and reads generated reservation ID.
+             */
             try (
                     PreparedStatement reservationStatement =
                             connection.prepareStatement(insertReservationSql, Statement.RETURN_GENERATED_KEYS)
@@ -80,6 +105,10 @@ public class RezervaceRepository {
                 }
             }
 
+            /*
+             * Inserts all selected equipment items into reservation.
+             * Batch insert is used because one reservation can contain multiple items.
+             */
             try (
                     PreparedStatement itemStatement =
                             connection.prepareStatement(insertReservationItemSql)
@@ -93,6 +122,7 @@ public class RezervaceRepository {
                 itemStatement.executeBatch();
             }
 
+            // Saves whole transaction.
             connection.commit();
 
         } catch (Exception e) {

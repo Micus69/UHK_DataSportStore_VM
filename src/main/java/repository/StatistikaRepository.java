@@ -1,3 +1,13 @@
+/*
+ * Repository responsible for loading system statistics.
+ *
+ * Main functionality:
+ * - Counts active reservations
+ * - Counts active rentals
+ * - Counts available and rented equipment
+ * - Calculates total rental revenue
+ */
+
 package repository;
 
 import model.Statistika;
@@ -8,7 +18,12 @@ import java.sql.ResultSet;
 
 public class StatistikaRepository {
 
+    /*
+     * Loads all dashboard statistics from database
+     * and returns them as one Statistika object.
+     */
     public Statistika loadStatistics() {
+
         int activeReservations = count("""
                 SELECT COUNT(*)
                 FROM Rezervace
@@ -47,6 +62,10 @@ public class StatistikaRepository {
         );
     }
 
+    /*
+     * Executes COUNT query and returns integer result.
+     * Used for dashboard counters.
+     */
     private int count(String sql) {
         try (
                 Connection connection = DBConnection.getConnection();
@@ -64,6 +83,10 @@ public class StatistikaRepository {
         return 0;
     }
 
+    /*
+     * Executes SUM query and returns decimal result.
+     * Used for total revenue calculation.
+     */
     private double sum(String sql) {
         try (
                 Connection connection = DBConnection.getConnection();

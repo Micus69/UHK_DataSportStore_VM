@@ -1,3 +1,9 @@
+/*
+ * Customer equipment overview window.
+ * Displays all currently available equipment
+ * loaded from database views through repository layer.
+ */
+
 package gui;
 
 import model.DostupneVybaveni;
@@ -10,10 +16,14 @@ import java.util.List;
 
 public class DostupneVybaveniFrame extends JFrame {
 
+    // Repository responsible for loading available equipment.
     private final DostupneVybaveniRepository repository;
+
+    // JTable model used for displaying equipment data.
     private DefaultTableModel tableModel;
 
     public DostupneVybaveniFrame() {
+
         this.repository = new DostupneVybaveniRepository();
 
         setTitle("Dostupné vybavení");
@@ -22,15 +32,27 @@ public class DostupneVybaveniFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         initLayout();
+
+        // Loads equipment data immediately after frame creation.
         loadDataFromDatabase();
     }
 
+    /*
+     * Creates graphical layout for equipment overview.
+     */
     private void initLayout() {
+
         JPanel panel = new JPanel(new BorderLayout());
 
-        JLabel titleLabel = new JLabel("Přehled dostupného vybavení", SwingConstants.CENTER);
+        JLabel titleLabel =
+                new JLabel(
+                        "Přehled dostupného vybavení",
+                        SwingConstants.CENTER
+                );
+
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
+        // Table structure used for customer equipment overview.
         tableModel = new DefaultTableModel(
                 new Object[]{
                         "ID",
@@ -44,22 +66,28 @@ public class DostupneVybaveniFrame extends JFrame {
                 },
                 0
         ) {
+
+            // Customer table is read-only.
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Zákaznický pohled je pouze pro čtení.
+                return false;
             }
         };
 
         JTable table = new JTable(tableModel);
+
         JScrollPane scrollPane = new JScrollPane(table);
 
+        // Reloads equipment data from database.
         JButton refreshButton = new JButton("Aktualizovat");
         refreshButton.addActionListener(e -> loadDataFromDatabase());
 
+        // Closes current frame.
         JButton closeButton = new JButton("Zpět");
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();
+
         buttonPanel.add(refreshButton);
         buttonPanel.add(closeButton);
 
@@ -70,12 +98,21 @@ public class DostupneVybaveniFrame extends JFrame {
         add(panel);
     }
 
+    /*
+     * Loads available equipment from repository
+     * and displays data inside JTable.
+     */
     private void loadDataFromDatabase() {
+
+        // Clears old table content.
         tableModel.setRowCount(0);
 
-        List<DostupneVybaveni> equipmentList = repository.findAllAvailable();
+        List<DostupneVybaveni> equipmentList =
+                repository.findAllAvailable();
 
+        // Inserts equipment rows into JTable model.
         for (DostupneVybaveni equipment : equipmentList) {
+
             tableModel.addRow(new Object[]{
                     equipment.getVybaveniID(),
                     equipment.getNazev(),
